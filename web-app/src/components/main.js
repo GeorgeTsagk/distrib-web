@@ -16,6 +16,24 @@ const Main = () => {
     borderRadius: '5px'
   }
 
+  const endpoints = {
+    'overlay': '/user/overlay',
+    'depart': '/user/depart'
+  }
+
+  const performAction = async () => {
+    const response = await fetch(`http://${selectedNode}.kenovios.space:${selectedPort}${endpoints[selectedAction]}`, {
+      method: 'POST',
+      body: {}, // string or object
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    const myJson = await response.json(); //extract JSON from the http response
+    console.log(myJson)
+    setResponseText(JSON.stringify(myJson, null, 2))
+  }
+
   return (
     <div
       style={{
@@ -137,6 +155,7 @@ const Main = () => {
                     selectedSongName,
                     selectedSongValue
                   )
+                  performAction()
                 }}
               >
                 Execute Command
@@ -149,11 +168,10 @@ const Main = () => {
               position: 'fixed',
               right: '25px',
               top: '80px',
-              width: '550px',
+              width: '650px',
               backgroundColor: '#192519',
               height: '550px',
-              overflowY: 'auto',
-              overflowX: 'clip',
+              overflow: 'auto',
               borderRadius: '5px',
               padding: '25px'
             }}

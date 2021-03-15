@@ -1,6 +1,13 @@
 import React, { useState } from 'react';
 import { Layout, Form, Select, InputNumber, Button, Input } from 'antd'
 import { JsonTable } from 'react-json-to-html'
+import ReactAudioPlayer from 'react-audio-player';
+
+import mp3 from '../santo-johny.mp3'
+import pyramids from '../pyramids.jpg'
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 const Main = () => {
   const [selectedNode, setSelectedNode] = useState('amenophis')
@@ -11,7 +18,7 @@ const Main = () => {
   const [responseText, setResponseText] = useState('No Response')
   const [response, setResponse] = useState({})
   const formItemStyle = {
-    backgroundColor: '#234523',
+    backgroundColor: 'rgba(23,45,23,0.4)',
     width: '100%',
     padding: '15px',
     marginBottom: '2px',
@@ -69,7 +76,11 @@ const Main = () => {
       style={{
         height: '100vh',
         width: '100vw',
-        backgroundColor: 'darkslateblue'
+        backgroundColor: 'darkslateblue',
+        overflow: 'hidden'
+      }}
+      onClick={(e) => {
+        document.getElementById('myAudio').play()
       }}
     >
       <Layout>
@@ -88,7 +99,10 @@ const Main = () => {
           style={{
             backgroundColor: 'darkslateblue',
             padding: '50px',
-            color: 'white'
+            color: 'white',
+            backgroundImage: `url(${pyramids})`,
+            backgroundSize: '100%',
+            minHeight: '900px',
           }}
         >
           <Form
@@ -198,9 +212,8 @@ const Main = () => {
               position: 'fixed',
               right: '25px',
               top: '80px',
-              width: '650px',
-              backgroundColor: '#192519',
-              height: '550px',
+              width: '700px',
+              height: '75vh',
               overflow: 'auto',
               borderRadius: '5px',
               padding: '25px',
@@ -211,6 +224,12 @@ const Main = () => {
           </div>
         </Layout.Content>
       </Layout>
+      <audio
+        loop
+        id='myAudio'
+        src={mp3}
+      >
+      </audio>
     </div>
   )
 }

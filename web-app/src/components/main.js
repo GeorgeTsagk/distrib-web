@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { Layout, Form, Select, InputNumber, Button, Input } from 'antd'
+import { JsonTable } from 'react-json-to-html'
 
 const Main = () => {
   const [selectedNode, setSelectedNode] = useState('amenophis')
-  const [selectedPort, setSelectedPort] = useState(0)
+  const [selectedPort, setSelectedPort] = useState(5000)
   const [selectedAction, setSelectedAction] = useState('overlay')
   const [selectedSongName, setSelectedSongName] = useState('')
   const [selectedSongValue, setSelectedSongValue] = useState('')
   const [responseText, setResponseText] = useState('No Response')
+  const [response, setResponse] = useState({})
   const formItemStyle = {
     backgroundColor: '#234523',
     width: '100%',
@@ -18,20 +20,48 @@ const Main = () => {
 
   const endpoints = {
     'overlay': '/user/overlay',
-    'depart': '/user/depart'
+    'depart': '/user/depart',
+    'insert': '/user/insert',
+    'delete': '/user/delete',
+    'query': '/user/query'
+  }
+
+  const createReqBody = () =>{
+    switch(selectedAction) {
+      case 'overlay':
+        return {}
+      case 'depart':
+        return {}
+      case 'insert':
+        return {
+          'key': selectedSongName,
+          'value': selectedSongValue
+        }
+      case 'delete':
+        return {
+          'key': selectedSongName
+        }
+      case 'query':
+        return {
+          'song_name': selectedSongName
+        }
+    }
   }
 
   const performAction = async () => {
+    console.log('Sending: ', createReqBody())
     const response = await fetch(`http://${selectedNode}.kenovios.space:${selectedPort}${endpoints[selectedAction]}`, {
       method: 'POST',
-      body: {}, // string or object
+      body: JSON.stringify(createReqBody()),
       headers: {
+        'Accept': 'application/json',
         'Content-Type': 'application/json'
       }
     });
     const myJson = await response.json(); //extract JSON from the http response
     console.log(myJson)
     setResponseText(JSON.stringify(myJson, null, 2))
+    setResponse(myJson)
   }
 
   return (
@@ -173,10 +203,11 @@ const Main = () => {
               height: '550px',
               overflow: 'auto',
               borderRadius: '5px',
-              padding: '25px'
+              padding: '25px',
+              color: 'black'
             }}
           >
-            {responseText}
+            <JsonTable json={response} />
           </div>
         </Layout.Content>
       </Layout>

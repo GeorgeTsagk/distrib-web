@@ -9709,6 +9709,11 @@
   "resolved" "https://registry.npmjs.org/react-is/-/react-is-17.0.1.tgz"
   "version" "17.0.1"
 
+"react-json-to-html@^0.0.6":
+  "integrity" "sha512-TFW4nCWukjwm82EtYy7IxcOcVaPzYJplnvFIEIDFphyj8wOEPYoiyv3fTZIemr1AkJNtMBTP/N2njqKfhUWmDw=="
+  "resolved" "https://registry.npmjs.org/react-json-to-html/-/react-json-to-html-0.0.6.tgz"
+  "version" "0.0.6"
+
 "react-refresh@^0.8.3", "react-refresh@>=0.8.3 <0.10.0":
   "integrity" "sha512-X8jZHc7nCMjaCqoU+V2I0cOhNW+QMBwSUkeXnTi8IPe6zaRWfn60ZzvFDZqWPfmSJfjub7dDW1SP0jaHWLu/hg=="
   "resolved" "https://registry.npmjs.org/react-refresh/-/react-refresh-0.8.3.tgz"

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Layout, Form, Select, InputNumber, Button, Input } from 'antd'
 import { JsonTable } from 'react-json-to-html'
-import ReactAudioPlayer from 'react-audio-player';
 
 import mp3 from '../santo-johny.mp3'
 import pyramids from '../pyramids.jpg'
@@ -15,8 +14,8 @@ const Main = () => {
   const [selectedAction, setSelectedAction] = useState('overlay')
   const [selectedSongName, setSelectedSongName] = useState('')
   const [selectedSongValue, setSelectedSongValue] = useState('')
-  const [responseText, setResponseText] = useState('No Response')
   const [response, setResponse] = useState({})
+  const [fullResults, setFullResults] = useState(false)
   const formItemStyle = {
     backgroundColor: 'rgba(23,45,23,0.4)',
     width: '100%',
@@ -67,7 +66,16 @@ const Main = () => {
     });
     const myJson = await response.json(); //extract JSON from the http response
     console.log(myJson)
-    setResponseText(JSON.stringify(myJson, null, 2))
+    for (const [key, value] of Object.entries(myJson)) {
+      if(typeof key == 'string' && key.length==40){
+        console.log('Checking key:' , key)
+        console.log(value)
+        var val = myJson[key]
+        val = (val.replace(/'/g, '"'))
+        myJson[key] = JSON.parse(val)
+      }
+    }
+    console.log(myJson)
     setResponse(myJson)
   }
 
@@ -80,6 +88,7 @@ const Main = () => {
         overflow: 'hidden'
       }}
       onClick={(e) => {
+        document.getElementById('myAudio').volume = 0.25
         document.getElementById('myAudio').play()
       }}
     >
@@ -213,14 +222,22 @@ const Main = () => {
               right: '25px',
               top: '80px',
               width: '700px',
-              height: '75vh',
+              height: '90vh',
               overflow: 'auto',
               borderRadius: '5px',
               padding: '25px',
               color: 'black'
             }}
+            onClick={(e) => {
+              setFullResults(true)
+            }}
+            onKeyPress={(e) => {
+              if(e.key=='Enter') setFullResults(false)
+            }}
           >
-            <JsonTable json={response} />
+            <JsonTable
+              json={response}
+            />
           </div>
         </Layout.Content>
       </Layout>

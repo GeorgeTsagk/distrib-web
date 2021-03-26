@@ -67,7 +67,7 @@ const Main = () => {
     const myJson = await response.json(); //extract JSON from the http response
     console.log(myJson)
     for (const [key, value] of Object.entries(myJson)) {
-      if(typeof key == 'string' && key.length==40){
+      if(typeof key == 'string' && key.length > 30){
         console.log('Checking key:' , key)
         console.log(value)
         var val = myJson[key]
